@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Settings</title>
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/icon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/rep/firebase-app.js"></script>
+  <script src="/rep/firebase-analytics.js"></script>
+  <script src="/rep/firebase-firestore.js"></script>
+  <script src="/rep/firebase-auth.js"></script>
+  <script src="/rep/firebase-database.js"></script>
+  <script src="/rep/jquery.min.js"></script>
+  <!-- <script src="/rep/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="/rep/bootstrap.min.css" crossorigin="anonymous">
+  <!-- <script src="/rep/bootstrap2.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>          -->
+  <script src="/rep/bootstrap2.min.js"></script>
+  <link rel="stylesheet" href="/rep/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+  <script src='/rep/socket.io.js'></script>
+  <script defer src="/rep/solid.js" crossorigin="anonymous"></script>
+  <script defer src="/rep/fontawesome.js" crossorigin="anonymous"></script>
+  <script src='/jscodes/moment.js'></script>
+  <script src='https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js'></script>
+  <script src='https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js'></script>
+  <!--try-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+</head>
+<link rel="stylesheet" href="/css/rel/settings.css">
+<body>
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <a href="/home">
+          <div id="add1" style="padding-left:15%;"><img class="img" src="/images/LabX.png" width="136" height="136">
+          </div>
+        </a>
+      </div>
+      <div style="text-align: center;" id="usernamelevel"></div>
+      <ul class="list-unstyled components">
+        <div class="wrap">
+          <form action="/combo/records">  
+          <div class="search">
+              <input id="textvalue" type="text" class="searchTerm" placeholder="Search">
+              <button type="submit" id="searchsubmit" class="searchButton" onclick="passvalues();" /><i class="fa fa-search"></i></button>   
+            </div>  
+            </form> 
+          
+       </div>
+        <li>
+          <a href="/home">Main Dashboard</a>
+        </li>
+        <li>
+          <a href="/combo/run">Run Samples</a>
+        </li>
+        <li>
+          <a href="/combo/records">Manage Records</a>
+        </li>
+        <li>
+          <a href="/about">Contact Us</a>
+        </li>
+        <li class="active">
+          <a href="/settings">Settings</a>
+        </li>
+        </µL>
+    </nav>
+
+    <!-- Page Content Holder -->
+    <div id="content">
+      <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="navbar-btn" style="background-color:transparent">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav navbar-center">
+              <li class="nav-item dropdown">
+                <a class="nav-link mr-1 my-1 date1" href="#" id="navbarDropdown" aria-haspopup="true"
+                  aria-expanded="false" style="color:white">
+                  <div id="date"></div>
+                  <div id="date1"></div>
+                </a>
+              </li>
+            </ul>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto justify-content-center">
+                <li class="nav-item dropdown">
+                  <a class="nav-link mr-2 my-1" href="#" id="navbarDropdown" aria-haspopup="true" aria-expanded="false"
+                    style="color:white">
+                    <div id="clock"></div>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/sessionLogout" role="button"><img
+                      src="https://firebasestorage.googleapis.com/v0/b/analyzerdb.appspot.com/o/logout.png?alt=media&token=e849b0b4-1e57-49c4-8ff4-412c2a9ade1d"
+                      alt="User" width="27px" height="27px"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </nav>
+      <!-- Settings -->
+      <div class="container ">
+
+          <!-- Audit Log Modal -->
+          <div class="modal fade" id="messagemodal" role="dialog" data-backdrop="false" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg modal-audit" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Audit Log</h4>
+                  <button type="button" class="close" onclick="$('#messagemodal').modal('hide');">&times;</button>
+                </div>
+                <div class="modal-body1" style="height:210px; width:700px;">
+                  <div id="content">
+
+                    <div class="row">
+                    <div class="col-1"><div id="bloodlabel">Log Number:</div></div>
+                    <div class="col-5 ml-5"><div class="modaltexts" id="number1"></div></div>
+
+                    <div class="col-1"><div id="bloodlabel">Activity:</div></div>
+                    <div class="col-4"><div class="modaltexts" id="activity1"></div></div></div>
+
+                    <div class="row"><div class="col">&nbsp;</div></div>
+
+                    <div class="row">
+                    <div class="col-1"><div id="bloodlabel">Date Comitted:</div></div>
+                    <div class="col-5 ml-5"><div class="modaltexts" id="date6"></div></div>
+                    
+                    <div class="col-1"><div id="bloodlabel">PID:</div></div>
+                    <div class="col-4"><div class="modaltexts" id="pid1"></div></div></div>
+
+                    <div class="row"><div class="col">&nbsp;</div></div>
+
+                    <div class="row">
+                    <div class="col-1"><div id="bloodlabel">Sample Date:</div></div>
+                    <div class="col-5 ml-5"><div class="modaltexts" id="sampledate1"></div></div></div>
+
+                    <div class="row"><div class="col">&nbsp;</div></div>
+                    
+                    <div class="row">
+                    <div class="col-1"><div id="bloodlabel">User Comitted:</div></div>
+                    <div class="col-4 ml-5"><div class="modaltexts" id="username63"></div></div></div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div id="FirstPart" class="container-fluid">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <table id="UserDetails" class="table table-borderless table-fluid">
+                <!--  Name and User Level -->
+                <h2>
+                  <div id="username5"></div>
+                  <div class="credentials"><input id="name1inputs"></div>
+                </h2>
+                <h5>
+                  <div id="userlvl1"></div>
+               
+                </h5>
+                <thead>
+                  <tr id="desc">
+                    <th class="w-30" style="text-align:left">
+                      <div class="inputBoxFname">
+                        Description:</div>
+                      <div id="desc1" class="infotab"></div>
+                      <div class="credentials"><input id="desc1inputs"></div>
+                    </th>
+                  </tr>
+                  <tr id="email">
+                    <th class="w-30" style="text-align:left">
+                      <div class="inputBoxFname">
+                        Email:</div>
+                      <div id="email1" class="infotab"></div>
+                      <div class="credentials"><input id="email1inputs"></div>
+                    </th>
+                  </tr>
+                  <tr id="username">
+                    <th class="w-30" style="text-align:left">
+                      <div class="inputBoxFname">
+                        Username:</div>
+                      <div id="username1" class="infotab"></div>
+                      <div class="credentials"><input id="username1inputs"></div>
+                    </th>
+                  </tr>
+                </thead>
+                </tbody>
+              </table>
+              <div align="center">
+                <button id="forgotBTN" class="btn text-light">Forgot Password?</button>
+                <button id="updateBTN" class="btn text-light">Update</button>
+                <button id="subchangeBTN" class="btn text-light">Submit Changes</button>
+                <button id="closeBTN" class="btn text-light">Close</button>
+              </div>
+            </div>
+            &nbsp;
+            <div class="col-sm "></div>
+            <!--Clock-->
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-5">
+              <p></p>
+              <div class="clockkk">
+                <div class="clock1">
+                  <div class="hour">
+                    <div class="hr" id="hr"></div>
+                  </div>
+                  <div class="min">
+                    <div class="mn" id="mn"></div>
+                  </div>
+                  <div class="sec">
+                    <div class="sc" id="sc"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            &nbsp;
+
+            <!--Calendar-->
+            <!-- <div class="col-md-offset-1 col-md-1"></div>  -->
+            <div class="col-sm-1">
+              <div class="calendar">
+                <div class="month">
+                  <i class="fas fa-angle-left prev"></i>
+                  <div class="date">
+                    <h1></h1>
+                    <p></p>
+                  </div>
+                  <i class="fas fa-angle-right next"></i>
+                </div>
+                <div class="weekdays">
+                  <div>Sun</div>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                </div>
+                <div class="days"></div>
+              </div>
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-12 "></div>
+            <div class="col-lg-10 "></div>
+          </div>
+        </div>
+        &nbsp;
+        <!---->
+
+        <!--REFERENCE BUTTON-->
+        <div class="center-block text-center">
+          <div class="col-12">
+            <div class="col">&nbsp</div>
+
+            <div class="TwoButtons">
+              <div class="center-block text-center">
+                <button id="refbtn" class="btn text-center text-dark" data-toggle="modal"
+                  data-target="#Modalref">Reference Range</button>
+
+                <div class="modal fade" id="Modalref" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                  aria-hidden="true" data-backdrop="false">
+                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-modal-header" id="ModalLongTitle">Edit
+                          Range</h5>
+                        <button type="button" class="close" onclick="$('#Modalref').modal('hide');" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="col-6">
+                            <th id="trd" class="w-10" style="text-align:left"><strong>Machine and
+                                Species</strong>
+                            <th class="no-gutters" style="text-align:center">
+                              <div class="dropdown bootstrap-select fit-width show"></div>
+                              <select class="selectpicker select-dte" id="msselect" data-size="4"
+                                data-live-search="true" data-width="85%">
+                                <option disabled selected value>Select an Option</option>
+                              </select>
+                          </div>
+
+                          <div class="col-3">
+                            <button id="machinebutton" class="btn btn-sbmt1 text-light" onclick=""
+                              class="button-xl pt-3"><span>Submit</span></button>
+                          </div>
+
+                          <div class="col-3">
+                            <button id="addRef" class="btn btn-sbmt1 text-light" class="button-xl pt-3"
+                              data-toggle="modal" data-target="#addRefModal"><span>Add Range</span></button>
+                          </div>
+
+                          <!--Modal-->
+                          <div class="modal fade" id="addRefModal" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalCenterTitle" aria-hidden="true" data-backdrop="false">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalCenterTitle">Add Range</h5>
+                                  <button type="button" class="close" onclick="$('#addRefModal').modal('hide');"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <th id="trd" class="w-10" style="text-align:left">
+                                        <strong>Machine</strong>
+                                      <th class="no-gutters" style="text-align:center">
+                                        <div class="dropdown bootstrap-select fit-width show"></div>
+                                        <select class="selectpicker select-dte" id="machineselect" data-size="4"
+                                          data-live-search="true" data-width="85%">
+                                          <option disabled selected value>Select an Option</option>
+                                          <option>Mythic 18 Vet</option>
+                                          <option>MNCHIP V5</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                      <th id="trd" class="w-10" style="text-align:left">
+                                        <strong>Species</strong>
+                                      <th class="no-gutters" style="text-align:center">
+                                        <input type="" class="form-control" id="speciesInp" placeholder="Add Species"
+                                          data-live-search="true" data-width="85%">
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">&nbsp</div>
+                                  </div>
+                                  <table id="mnchipv5table1" class="table table-bordered">
+                                    <tr id="seq">
+                                      <th>Test</th>
+                                      <th>Lower Limit</th>
+                                      <th>Upper Limit</th>
+
+                                    </tr>
+
+                                    <tr id="wbc">
+                                      <td id="seq2">ALB</td>
+                                      <td><input id="albl" class="noBorderInp" type="number"></td>
+                                      <td><input id="albu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="neu">
+                                      <td id="seq2">TP</td>
+                                      <td><input id="tpl" class="noBorderInp" type="number"></td>
+                                      <td><input id="tpu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="lym">
+                                      <td id="seq2">Ca</td>
+                                      <td><input id="calower" class="noBorderInp" type="number"></td>
+                                      <td><input id="caupper" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mon">
+                                      <td id="seq2">GLU</td>
+                                      <td><input id="glul" class="noBorderInp" type="number"></td>
+                                      <td><input id="gluu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="eos">
+                                      <td id="seq2">BUN</td>
+                                      <td><input id="bunl" class="noBorderInp" type="number"></td>
+                                      <td><input id="bunu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="bas">
+                                      <td id="seq2">P</td>
+                                      <td><input id="pl" class="noBorderInp" type="number"></td>
+                                      <td><input id="pu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="rbc">
+                                      <td id="seq2">AMY</td>
+                                      <td><input id="amyl" class="noBorderInp" type="number"></td>
+                                      <td><input id="amyu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="hgb">
+                                      <td id="seq2">CHOL</td>
+                                      <td><input id="choll" class="noBorderInp" type="number"></td>
+                                      <td><input id="cholu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="hct">
+                                      <td id="seq2">ALT</td>
+                                      <td><input id="altl" class="noBorderInp" type="number"></td>
+                                      <td><input id="altu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mcv">
+                                      <td id="seq2">TBIL</td>
+                                      <td><input id="tbill" class="noBorderInp" type="number"></td>
+                                      <td><input id="tbilu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mch">
+                                      <td id="seq2">ALP</td>
+                                      <td><input id="alpl" class="noBorderInp" type="number"></td>
+                                      <td><input id="alpu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mchc">
+                                      <td id="seq2">CRE</td>
+                                      <td><input id="crel" class="noBorderInp" type="number"></td>
+                                      <td><input id="creu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="plt">
+                                      <td id="seq2">CK</td>
+                                      <td><input id="ckl" class="noBorderInp" type="number"></td>
+                                      <td><input id="cku" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                  </table>
+
+                                  <table id="mythic18vettable1" class="table table-bordered">
+                                    <tr id="seq">
+                                      <th>Test</th>
+                                      <th>Lower Limit</th>
+                                      <th>Upper Limit</th>
+                                    </tr>
+
+                                    <tr id="wbc">
+                                      <td id="seq2">WBC Count</td>
+                                      <td><input id="wbcl" class="noBorderInp" type="number"></td>
+                                      <td><input id="wbcu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="lym">
+                                      <td id="seq2">% Lymphocytes</td>
+                                      <td><input id="lyml" class="noBorderInp" type="number"></td>
+                                      <td><input id="lymu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mon">
+                                      <td id="seq2">% Monocytes</td>
+                                      <td><input id="monl" class="noBorderInp" type="number"></td>
+                                      <td><input id="monu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="gra">
+                                      <td id="seq2">% Granulocytes</td>
+                                      <td><input id="gral" class="noBorderInp" type="number"></td>
+                                      <td><input id="grau" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="rbc">
+                                      <td id="seq2">RBC Count</td>
+                                      <td><input id="rbcl" class="noBorderInp" type="number"></td>
+                                      <td><input id="rbcu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="lymn">
+                                      <td id="seq2">Lymphocytes</td>
+                                      <td><input id="lymln" class="noBorderInp" type="number"></td>
+                                      <td><input id="lymun" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="monn">
+                                      <td id="seq2">Monocytes</td>
+                                      <td><input id="monln" class="noBorderInp" type="number"></td>
+                                      <td><input id="monun" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="gran">
+                                      <td id="seq2">Granulocytes</td>
+                                      <td><input id="graln" class="noBorderInp" type="number"></td>
+                                      <td><input id="graun" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="hgb">
+                                      <td id="seq2">HGB</td>
+                                      <td><input id="hgbl" class="noBorderInp" type="number"></td>
+                                      <td><input id="hgbu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="hct">
+                                      <td id="seq2">HCT</td>
+                                      <td><input id="hctl" class="noBorderInp" type="number"></td>
+                                      <td><input id="hctu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mcv">
+                                      <td id="seq2">MCV</td>
+                                      <td><input id="mcvl" class="noBorderInp" type="number"></td>
+                                      <td><input id="mcvu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mch">
+                                      <td id="seq2">MCH</td>
+                                      <td><input id="mchl" class="noBorderInp" type="number"></td>
+                                      <td><input id="mchu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="mchc">
+                                      <td id="seq2">MCHC</td>
+                                      <td><input id="mchcl" class="noBorderInp" type="number"></td>
+                                      <td><input id="mchcu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                    <tr id="plt">
+                                      <td id="seq2">PLT</td>
+                                      <td><input id="pltl" class="noBorderInp" type="number"></td>
+                                      <td><input id="pltu" class="noBorderInp" type="number"></td>
+                                    </tr>
+
+                                  </table>
+                                </div>
+                                <div class="modal-footer">
+                                  <button id="addsubmit" type="button" class="btn text-light">Submit</button>
+                                  <button id="savesubmit" type="button" class="btn text-light">Save
+                                    Changes</button>
+                                  <button id="changemachine" type="button" class="btn text-light">Change
+                                    Machine</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col">&nbsp
+                          </div>
+                        </div>
+                        <table id="mnchipv5table" class="table table-bordered">
+                          <tr id="seq">
+                            <th>Test</th>
+                            <th>Lower Limit</th>
+                            <th>Upper Limit</th>
+
+                          </tr>
+
+                          <tr id="wbc">
+                            <td id="seq2">ALB</td>
+                            <td>
+                              <div id="albl1"></div><input id="albl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="albu1"></div><input id="albu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="neu">
+                            <td id="seq2">TP</td>
+                            <td>
+                              <div id="tpl1"></div><input id="tpl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="tpu1"></div><input id="tpu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="lym">
+                            <td id="seq2">Ca</td>
+                            <td>
+                              <div id="cal1"></div><input id="calower2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="cau1"></div><input id="caupper2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mon">
+                            <td id="seq2">GLU</td>
+                            <td>
+                              <div id="glul1"></div><input id="glul2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="gluu1"></div><input id="gluu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="gra">
+                            <td id="seq2">BUN</td>
+                            <td>
+                              <div id="bunl1"></div><input id="bunl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="bunu1"></div><input id="bunu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="bas">
+                            <td id="seq2">P</td>
+                            <td>
+                              <div id="pl1"></div><input id="pl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="pu1"></div><input id="pu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="rbc">
+                            <td id="seq2">AMY</td>
+                            <td>
+                              <div id="amyl1"></div><input id="amyl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="amyu1"></div><input id="amyu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="hgb">
+                            <td id="seq2">CHOL</td>
+                            <td>
+                              <div id="choll1"></div><input id="choll2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="cholu1"></div><input id="cholu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="hct">
+                            <td id="seq2">ALT</td>
+                            <td>
+                              <div id="altl1"></div><input id="altl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="altu1"></div><input id="altu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mcv">
+                            <td id="seq2">TBIL</td>
+                            <td>
+                              <div id="tbill1"></div><input id="tbill2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="tbilu1"></div><input id="tbilu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mch">
+                            <td id="seq2">ALP</td>
+                            <td>
+                              <div id="alpl1"></div><input id="alpl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="aplu1"></div><input id="alpu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mchc">
+                            <td id="seq2">CRE</td>
+                            <td>
+                              <div id="crel1"></div><input id="crel2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="creu1"></div><input id="creu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="plt">
+                            <td id="seq2">CK</td>
+                            <td>
+                              <div id="ckl1"></div><input id="ckl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="cku1"></div><input id="cku2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                        </table>
+
+
+                        <table id="mythic18vettable" class="table table-bordered">
+                          <tr id="seq">
+                            <th>Test</th>
+                            <th>Lower Limit</th>
+                            <th>Upper Limit</th>
+                          </tr>
+
+                          <tr id="wbc">
+                            <td id="seq2">WBC Count</td>
+                            <td>
+                              <div id="wbcl1"></div><input id="wbcl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="wbcu1"></div><input id="wbcu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="lym">
+                            <td id="seq2">% Lymphocytes</td>
+                            <td>
+                              <div id="lyml1"></div><input id="lyml2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="lymu1"></div><input id="lymu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mon">
+                            <td id="seq2">% Monocytes</td>
+                            <td>
+                              <div id="monl1"></div><input id="monl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="monu1"></div><input id="monu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="gra">
+                            <td id="seq2">% Granulocytes</td>
+                            <td>
+                              <div id="gral1"></div><input id="gral2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="grau1"></div><input id="grau2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="rbc">
+                            <td id="seq2">RBC Count</td>
+                            <td>
+                              <div id="rbcl1"></div><input id="rbcl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="rbcu1"></div><input id="rbcu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="lymn">
+                            <td id="seq2">Lymphocytes</td>
+                            <td>
+                              <div id="lyml1n"></div><input id="lyml2n" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="lymu1n"></div><input id="lymu2n" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="monn">
+                            <td id="seq2">Monocytes</td>
+                            <td>
+                              <div id="monl1n"></div><input id="monl2n" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="monu1n"></div><input id="monu2n" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="gran">
+                            <td id="seq2">Granulocytes</td>
+                            <td>
+                              <div id="gral1n"></div><input id="gral2n" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="grau1n"></div><input id="grau2n" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="hgb">
+                            <td id="seq2">HGB</td>
+                            <td>
+                              <div id="hgbl1n"></div><input id="hgbl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="hgbu1"></div><input id="hgbu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="hct">
+                            <td id="seq2">HCT</td>
+                            <td>
+                              <div id="hctl1"></div><input id="hctl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="hctu1"></div><input id="hctu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mcv">
+                            <td id="seq2">MCV</td>
+                            <td>
+                              <div id="mcvl1"></div><input id="mcvl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="mcvu1"></div><input id="mcvu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mch">
+                            <td id="seq2">MCH</td>
+                            <td>
+                              <div id="mchl1"></div><input id="mchl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="mchu1"></div><input id="mchu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="mchc">
+                            <td id="seq2">MCHC</td>
+                            <td>
+                              <div id="mchcl1"></div><input id="mchcl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="mchcu1"></div><input id="mchcu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                          <tr id="plt">
+                            <td id="seq2">PLT</td>
+                            <td>
+                              <div id="pltl1"></div><input id="pltl2" class="noBorderInp1" type="number">
+                            </td>
+                            <td>
+                              <div id="pltu1"></div><input id="pltu2" class="noBorderInp1" type="number">
+                            </td>
+                          </tr>
+
+                        </table>
+
+                      </div>
+                      <div id="footerRefMythic18vet" class="modal-footer">
+                        <button id="addsubmit1" type="button" class="btn addsubmit text-light">Submit</button>
+                      </div>
+                      <div id="footerRefMnchipv5" class="modal-footer">
+                        <button id="addsubmit2" type="button" class="btn addsubmit text-light">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- CHANGE PRINT ELEMENTS -->
+
+                <button id="picbtn" class="btn text-center text-light" data-toggle="modal"
+                  data-target="#ModalPic">Change
+                  Print Elements</button>
+
+                <div class="modal fade" id="ModalPic" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                  aria-hidden="true" data-backdrop="false">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable " role="document">
+                    <div id="modal-printelements" class="modal-content">
+
+                      <div class="modal-header">
+                        <h5 class="modal-title text-modal-header" id="ModalLongTitle">Change Print Elements</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body1">
+                        <button id="uprint" class="btn text-center text-light">Upload Print Elements</button>
+                        <button id="ctext" class="btn text-center text-light">Change Text Elements</button>
+                       
+                       <div id="textelements">
+                        <div class="row">
+                          <table id="fname1" class="table table-borderless table-fluid">
+                              <thead>
+                                  <tr id="fn1">
+                                      <th class="w-30" style="text-align:left">
+                                          <div class="inputtext1">Clinic Name: <input
+                                                  id="clinicinputs1" type="text" required="" /></div>
+                                      </th>
+                                  </tr>
+                                  <tr id="fn1">
+                                    <th class="w-30" style="text-align:left">
+                                        <div class="inputtext1">Address: <input
+                                                id="addressinputs1" type="text" required="" /></div>
+                                    </th>
+                                </tr>
+                                <tr id="fn1">
+                                  <th class="w-30" style="text-align:left">
+                                      <div class="inputtext1">Person 1: <input
+                                              id="labtechnician1" type="text" required="" /></div>
+                                  </th>
+                              </tr>
+                              <tr id="fn1">
+                                <th class="w-30" style="text-align:left">
+                                    <div class="inputtext1">Details 1: <input
+                                            id="details10" type="text" required="" /></div>
+                                </th>
+                            </tr>
+                              <tr id="fn1">
+                                <th class="w-30" style="text-align:left">
+                                    <div class="inputtext1">Person 2: <input
+                                            id="vetinputs1" type="text" required="" /></div>
+                                </th>
+                            </tr>
+                            <tr id="fn1">
+                              <th class="w-30" style="text-align:left">
+                                  <div class="inputtext1">Details 2: <input
+                                          id="details2" type="text" required="" /></div>
+                              </th>
+                          </tr>
+                            <tr id="fn1">
+                              <th class="w-30" style="text-align:left">
+                                <button id="textsubmit" class="btn text-center text-light">Submit</button>
+                              </th>
+                          </tr>
+                               
+
+                              </thead>
+                              </tbody>
+                          </table>
+
+                      </div>
+                       
+                       </div>
+                        <form id="printelements">
+                          <div class="row">
+                            <div class="col">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-9 pt-5 form-group hirehide is-empty is-fileinput width100">
+                              <div class="inputBoxUpload">
+                                <select class="selectpicker toggle mb-4 btn-disabled" id="optionselect" data-size="4"
+                                  data-width="100%" style="text-align:center;">
+                                  <option selected value style="text-align:center;" disabled>Select an Option
+                                  </option>
+                                  <option style="text-align:center;">Logo</option>
+                                  <option style="text-align:center;">Person 1 E-Signature</option>
+                                  <option style="text-align:center;">Person 2 E-Signature</option>
+                                </select>
+                              </div>
+                              <div class="custom-file mb-3">
+                                <input type="file" class="custom-file-input" accept="image/*"
+                                  value="Choose a file" name="profilepic[]" id="uploadre" name="filename" disabled>
+                                <label class="custom-file-label" id="filenamelabel" for="customFile">Choose a
+                                  file</label>
+                                <label id="upprogress"></label>
+                              </div>
+                            </div>
+                            <div class="col-3 upload-demo">
+                              <div class="upload-demo-wrap"><img class="portimg"></div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- The Modal1 -->
+            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" data-backdrop="false"
+              data-target="#myModal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="info1"></h5>
+                  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <!-- Divider -->
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <div class="AuditLog">
+              <div class="p-2 row">
+                <div class="col-lg-3">
+                  <div class="run">Audit Log</div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+              <div class="spinner-grow spinner-custom" role="status">
+                <span class="sr-only">Loading...</span>
+              </div></div>
+              <table class="table " id="example" style="width:100%">
+
+                <thead>
+                  <tr>
+                    <th data-sortable="false">Number</th>
+                    <th data-sortable="false">Activity</th>
+                    <th data-sortable="false"></th>
+                    <th data-sortable="false"></th>
+                    <th data-sortable="false"></th>
+                    <th data-sortable="false">Date Committed</th>
+                  </tr>
+                </thead>
+                <tbody id="logresults">
+                </tbody>
+              </table>
+              &nbsp;
+            </div>
+          </div>
+          &nbsp;
+
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" data-backdrop="false" data-target="#myModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    <div id="error1"></div>
+                  </h5>
+                  <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-rst text-light" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      &nbsp;
+      
+      <script src="/jscodes/date.js"></script>
+      <script src="/jscodes/bigdate.js"></script>
+      <script>
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+          var fileName = $(this).val().split("\\").pop();
+          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+      </script>
+      <script type="module" src="/jscodes/rel/settings.js"></script>
+      <script src="/jscodes/navbutton.js"></script>
+      <script>function passvalues() {
+        var name = document.getElementById("textvalue").value; 
+        localStorage.setItem("textvalue",name); 
+        return false; 
+        }</script>
+</body>
+
+</html>
+
+
+
+
+
+
+<!--
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                  <p></p>
+                  <div class="row">
+
+                    <div class="clock">
+                      <div class="hour">
+                        <div class="hr" id="hr"></div>
+                      </div>
+                      <div class="min">
+                        <div class="mn" id="mn"></div>
+                      </div>
+                      <div class="sec">
+                        <div class="sc" id="sc"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+             
+                <div class="col-md-offset-1 col-md-1"></div>
+                <div class="col-sm-1">
+
+                  <div class="calendar">
+                    <div class="month">
+                      <i class="fas fa-angle-left prev"></i>
+                      <div class="date">
+                        <h1></h1>
+                        <p></p>
+                      </div>
+                      <i class="fas fa-angle-right next"></i>
+                    </div>
+                    <div class="weekdays">
+                      <div>Sun</div>
+                      <div>Mon</div>
+                      <div>Tue</div>
+                      <div>Wed</div>
+                      <div>Thu</div>
+                      <div>Fri</div>
+                      <div>Sat</div>
+                    </div>
+                    <div class="days"></div>
+                  </div>
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-1"></div>
+                <div class="col-lg-12 "></div>
+                <div class="col-lg-10 "></div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </div>
+
+        Date-->
+<!-- <div class="form-group mr-2">
+  <div class="col-sm-2 time"><div class="inputBox" >
+      <input id="date" class="form-control" type="date" value="yyyy-mm-dd"></input></div></div>
+</div> -->
+
+
+
+<!-- <button id="advancedbtn"  class="btn text-center text-light" data-toggle="modal" data-target="#ModalCenter" >Audit Log</button> 
+<div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true" data-backdrop="false">
+  
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable " role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header" >
+        <h5 class="modal-title text-modal-header" id="ModalLongTitle">History</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      
+        <div class="modal-body" >
+
+    
+          <script src="/jscodes/date.js"></script>
+          <script src="/jscodes/bigdate.js"></script> 
+      <table class="table " id="example" style="width:100%" >
+          
+    <thead>
+      <tr>
+        <th data-sortable="false">Number</th>
+        <th data-sortable="false">Activity</th>
+        <th data-sortable="false">Date and Time </th> 
+        <th data-sortable="false">Machine</th>
+        <th data-sortable="false">SID</th>
+        <th data-sortable="false">Test Run Date</th>
+        <th data-sortable="false">Username</th>
+      </tr>
+  </thead>
+  <tbody id="logresults">
+  </tbody>
+</table>
+ </div>
+</div>
+</div>
+</div>
+<div class="row">
+  <div class="col">
+    &nbsp
+    <div>
+</div>
+</div> 
+</div>
+</div> -->
